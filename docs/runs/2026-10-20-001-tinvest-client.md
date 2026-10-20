@@ -48,8 +48,37 @@
 - Из спеки остались: tc-10 (live-smoke, ручной) и DoD-пункты
   (README-секция запуска, отметка tc-10 в docs/runs).
 
-## Judge-протокол
+## tc-10: live-smoke (дополнение прогона)
 
-Диффы 07d854c..a8 judge-модели не прогонялись (judge-скрипт в репо есть,
-но runner ещё не связан — очередь оркестратора только собирается).
-Кандидат на суд: 05dbe03 — самый экономно-спековый дифф.
+Проблемы, которые вскрыл живой прогон против SDK v7.1.0 (все кончены в
+коммитах fix):
+
+1. **`endpoint: undefined` перетирает дефолт SDK.** `{...defaults, ...opts}`
+   в конструкторе SDK: явное `endpoint: undefined` → `dns:undefined:443` →
+   UNAVAILABLE → «3 ретрая». Лечение: ключ в init-объект передаём только
+   если задан.
+2. **d.ts врёт про поля.** `SharesResponse.instruments[*]` в рантайме
+   отдаёт `uid`, а не `instrumentUid` (в d.ts наоборот). Клиент мапит оба
+   (`instrumentUid ?? uid`), структурный тип TInvestBackend доведён.
+3. **TLS: российский доверенный CA.** Без трастовой цепочки grpc-js падает
+   «self-signed certificate in certificate chain» (MITM.getMinistry).
+   Лечение: `GRPC_DEFAULT_SSL_ROOTS_FILE_PATH` на бандл
+   `packages/core/certs/ca-bundle-russian.pem` (реквизит скопирован из
+   Python-референса `~/projects/lfstl/jump_news`) — env читается grpc-js
+   на импорте, поэтому в smoke-скрипте бандл подключается ДО
+   динамического `import("@af/core")`.
+4. Уточнены исходы ошибок: финальные Transport/Rate-обёртки теперь несут
+   с собой базовое сообщение (диагностика без отдельного дебага).
+
+Результат tc-10 (`pnpm smoke:tinvest` с read-only токеном из локального
+.env, вне CI):
+
+```
+candles=4 news=12 (SBER, 2026-10-17T12:14:11.496Z .. 2026-10-20T12:14:11.496Z)
+last close: 2026-10-20T00:00:00.000Z open=290.9 high=294 low=289.53 close=292.92 vol=17178353
+news[0]: 2026-10-20T11:48:02.027Z «Облачная "дочка" МТС...» uids=4
+```
+
+Спека 001 закрыта: tc-01..tc-10 + DoD (tasks.md). Прогон judge на диффы
+не подключён (следующий шаг конвейера — спека 002-ingest и связка judge
+в orchestrator).

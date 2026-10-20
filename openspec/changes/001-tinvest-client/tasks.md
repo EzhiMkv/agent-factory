@@ -60,11 +60,12 @@
 - тест: burst из 20 запросов при tps=5 — межзапросные зазоры ≥190 мс (fake timers)
 
 ## tc-10 live-smoke (ручной)
-- [ ] `scripts/smoke-tinvest.ts`: SBER, 3 дня, дневки; вывести
-  `candles=N news=M`
+- [x] `scripts/smoke-tinvest.ts`: SBER, 3 дня, дневки; вывести
+  `candles=N news=M` — прогон 2026-10-20: `candles=4 news=12`
 - не в CI; запуск только с локальным .env
 
 ## Definition of done изменения 001
-- [ ] все тикеты tc-01..tc-09 merged, tc-10 отмечен в docs/runs
-- [ ] `pnpm -r test && pnpm -r build && pnpm -r lint` зелёные (да, для core+api)
-- [ ] README: секция запуска дополнена по факту
+- [x] все тикеты tc-01..tc-09 merged, tc-10 отмечен в docs/runs
+  (docs/runs/2026-10-20-001-tinvest-client.md + live-smoke там же)
+- [x] `pnpm -r test && pnpm -r build && pnpm -r lint` зелёные (core+api)
+- [x] README: секция запуска дополнена по факту (app/README.md)
