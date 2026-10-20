@@ -6,7 +6,11 @@ settings:
 
 importers:
 
-  .: {}
+  .:
+    devDependencies:
+      '@af/core':
+        specifier: workspace:*
+        version: link:packages/core
 
   packages/api:
     dependencies:

@@ -4,7 +4,10 @@
 // Энумы SDK экспортируются не из корня пакета, а из сгенерированных модулей
 // (см. README SDK): CandleInterval — marketdata, InstrumentStatus — common.
 
-import { TinkoffInvestApi } from "tinkoff-invest-api";
+import {
+  TinkoffInvestApi,
+  type TinkoffInvestApiOptions,
+} from "tinkoff-invest-api";
 import {
   CandleInterval,
   type GetCandlesRequest,
@@ -54,7 +57,9 @@ export interface TInvestBackend {
       classCode?: string;
       ticker?: string;
       name?: string;
+      /** SDK v7: в d.ts поле названо instrumentUid, в рантайме придёт uid. */
       instrumentUid?: string;
+      uid?: string;
       currency?: string;
     }>;
   }>;
@@ -127,10 +132,11 @@ export class TInvestClient {
 
   private get transport(): TInvestBackend {
     if (!this.backend) {
-      this.api = new TinkoffInvestApi({
-        token: this.opts.token,
-        endpoint: this.opts.endpoint,
-      });
+      // endpoint ключом не передаём даже при undefined: {...defaults, ...opts}
+      // SDK перетирает дефолтный endpoint значением undefined → dns:undefined:443.
+      const init: TinkoffInvestApiOptions = { token: this.opts.token };
+      if (this.opts.endpoint) init.endpoint = this.opts.endpoint;
+      this.api = new TinkoffInvestApi(init);
       this.backend = sdkBackend(this.api);
     }
     return this.backend;
@@ -159,24 +165,25 @@ export class TInvestClient {
       try {
         return await fn(this.transport);
       } catch (err) {
+        const base = String(err).slice(0, 260);
         if (isUnauthenticatedError(err)) {
           throw new TInvestAuthError(
-            `T-Invest ${what}: токен отклонён. Проверь T_INVEST_TOKEN (read-only) — шаблон .env.example`,
+            `T-Invest ${what}: токен отклонён (${base}). Проверь T_INVEST_TOKEN (read-only) — шаблон .env.example`,
           );
         }
         if (isRateLimitError(err)) {
-          if (attempt === 3) throw new TInvestRateError(`T-Invest ${what}: лимит, 3 ретрая исчерпаны`);
+          if (attempt === 3) throw new TInvestRateError(`T-Invest ${what}: лимит, 3 ретрая исчерпаны — ${base}`);
           await sleep(this.retryBaseDelayMs * (attempt + 1));
           continue;
         }
         if (isRetryableTransportError(err)) {
           if (attempt === 3) {
-            throw new TInvestTransportError(`T-Invest ${what}: транспорт, 3 ретрая исчерпаны`);
+            throw new TInvestTransportError(`T-Invest ${what}: транспорт, 3 ретрая исчерпаны — ${base}`);
           }
           await sleep(this.retryBaseDelayMs * attempt);
           continue;
         }
-        throw new TInvestTransportError(`T-Invest ${what}: ${String(err).slice(0, 300)}`);
+        throw new TInvestTransportError(`T-Invest ${what}: ${base}`);
       }
     }
     throw new TInvestTransportError(`T-Invest ${what}: недостижимо`);
@@ -189,13 +196,14 @@ export class TInvestClient {
       "instruments.shares",
     );
     return (resp.instruments ?? [])
-      .filter((i) => i.classCode === "TQBR" && i.ticker && i.instrumentUid)
+      .filter((i) => i.classCode === "TQBR" && i.ticker)
       .map((i) => ({
         ticker: i.ticker ?? "",
         name: i.name ?? "",
-        instrumentUid: i.instrumentUid ?? "",
+        instrumentUid: i.instrumentUid ?? i.uid ?? "",
         currency: i.currency ?? "rub",
-      }));
+      }))
+      .filter((s) => s.instrumentUid !== "");
   }
 
   /** Свечи за период. Период длиннее лимита API — чанками; единый вывод
