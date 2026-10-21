@@ -86,4 +86,108 @@ contract CritterTest is Test {
         vm.expectRevert(bytes("no critter"));
         critterNFT.ownerOf(999);
     }
+
+    // ---------- tc-04: уход ----------
+
+    function _mintToAlice() internal returns (uint256) {
+        vm.prank(deployer);
+        return critterNFT.mintTo(alice);
+    }
+
+    function test_FeedClampsTop() public {
+        uint256 tokenId = _mintToAlice();
+
+        vm.prank(alice);
+        vm.expectEmit(true, false, false, true);
+        emit Critter.Fed(20); // 80 + 100 клампится до 100, реально прибавка 20
+        critterNFT.feed(100);
+
+        assertEq(critterNFT.critter(tokenId).satiety, 100);
+    }
+
+    function test_FeedClampsInputOverHundred() public {
+        uint256 tokenId = _mintToAlice();
+
+        vm.prank(alice);
+        critterNFT.feed(255); // вход 0..255 клампится к 0..100 как 100
+
+        assertEq(critterNFT.critter(tokenId).satiety, 100);
+    }
+
+    function test_PlayClampsTopAndDrainsEnergy() public {
+        uint256 tokenId = _mintToAlice();
+
+        vm.prank(alice);
+        vm.expectEmit(true, false, false, true);
+        emit Critter.Played(30); // 70 + 100 клампится до 100
+        critterNFT.play(100);
+
+        Critter.CritterStatus memory s = critterNFT.critter(tokenId);
+        assertEq(s.happiness, 100);
+        assertEq(s.energy, 0); // 90 - 100 клампится снизу до 0
+    }
+
+    function test_PlayGivesHappinessAndSpendsEnergy() public {
+        uint256 tokenId = _mintToAlice();
+
+        vm.prank(alice);
+        critterNFT.play(20);
+
+        Critter.CritterStatus memory s = critterNFT.critter(tokenId);
+        assertEq(s.happiness, 90);
+        assertEq(s.energy, 70);
+    }
+
+    function test_PlayAtZeroEnergyReverts() public {
+        _mintToAlice();
+
+        vm.prank(alice);
+        critterNFT.play(100); // энергия 90 → 0
+
+        vm.prank(alice);
+        vm.expectRevert(bytes(unicode"слишком устал — пухлик зевает"));
+        critterNFT.play(10);
+    }
+
+    function test_SleepClampsTop() public {
+        uint256 tokenId = _mintToAlice();
+
+        vm.prank(alice);
+        vm.expectEmit(true, false, false, true);
+        emit Critter.Slept(10); // 90 + 255 (клампится к 100) → реально +10
+        critterNFT.sleep(255);
+
+        assertEq(critterNFT.critter(tokenId).energy, 100);
+    }
+
+    function test_SleepRaisesEnergy() public {
+        uint256 tokenId = _mintToAlice();
+
+        vm.prank(alice);
+        critterNFT.sleep(5);
+
+        assertEq(critterNFT.critter(tokenId).energy, 95);
+    }
+
+    function test_CareByNonOwnerReverts() public {
+        _mintToAlice();
+
+        vm.prank(bob);
+        vm.expectRevert(bytes(unicode"не твой пухлик"));
+        critterNFT.feed(10);
+
+        vm.prank(bob);
+        vm.expectRevert(bytes(unicode"не твой пухлик"));
+        critterNFT.play(10);
+
+        vm.prank(bob);
+        vm.expectRevert(bytes(unicode"не твой пухлик"));
+        critterNFT.sleep(10);
+    }
+
+    function test_CareWithoutCritterReverts() public {
+        vm.prank(alice);
+        vm.expectRevert(bytes("no critter"));
+        critterNFT.feed(10);
+    }
 }
