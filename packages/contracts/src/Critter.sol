@@ -86,9 +86,10 @@ contract Critter {
     }
 
     function tokenURI(uint256 tokenId) external view returns (string memory) {
-        // tc-03: арт пухлика рисуется on-chain из ДНК — data-URI SVG без хоста
+        // tc-03: арт пухлика рисуется on-chain из ДНК — data-URI SVG без хоста;
+        // tc-06: level нужен рендеру для редкой мутации после первой эволюции
         require(_critters[tokenId].hatched, "no critter");
-        return Render.art(_critters[tokenId].dnaSeed);
+        return Render.art(_critters[tokenId].dnaSeed, _critters[tokenId].level);
     }
 
     function critter(uint256 tokenId) external view returns (CritterStatus memory) {
