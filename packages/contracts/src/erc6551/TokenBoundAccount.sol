@@ -38,6 +38,12 @@ contract TokenBoundAccount is IERC6551Account {
 
     receive() external payable {}
 
+    // Аккаунт питомца умеет держать NFT: принимает safeMint/safeTransfer
+    // (ачивки за эволюцию — tc-08, и всё будущее добро пухлика)
+    function onERC721Received(address, address, uint256, bytes calldata) external pure returns (bytes4) {
+        return this.onERC721Received.selector;
+    }
+
     function execute(address to, uint256 value, bytes calldata data) external payable returns (bytes memory) {
         if (!_isTokenOwner()) revert NotTokenOwner();
         _state++;
