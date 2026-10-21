@@ -2,6 +2,7 @@
 pragma solidity ^0.8.13;
 
 import {Render} from "./render.sol";
+import {IEvolutionHook} from "./Achievements.sol";
 
 contract Critter {
     struct CritterStatus {
@@ -35,6 +36,9 @@ contract Critter {
     address public owner;
     uint256 private _nextTokenId = 1;
 
+    // tc-08: хук ачивок — при эволюции milestone-NFT минтится в TBA пухлика; 0 = выключен
+    address public achievements;
+
     mapping(uint256 => address) private _owners;
     mapping(address => uint256) private _balances;
     mapping(uint256 => CritterStatus) private _critters;
@@ -46,6 +50,11 @@ contract Critter {
 
     constructor() {
         owner = msg.sender;
+    }
+
+    // tc-08: подключение хука ачивок (деплоер, после деплоя Achievements)
+    function setAchievements(address achievements_) external onlyOwner {
+        achievements = achievements_;
     }
 
     function mintTo(address to) external onlyOwner returns (uint256) {
@@ -136,11 +145,21 @@ contract Critter {
         if (s.level == EVOLVE_LEVEL_1 && s.stage < 1) {
             s.stage = 1;
             emit Evolved(1);
+            _unlockMilestone(1);
         }
         if (s.level == EVOLVE_LEVEL_2 && s.stage < 2) {
             s.stage = 2;
             emit Evolved(2);
+            _unlockMilestone(2);
         }
+    }
+
+    // tc-08: ачивка за эволюцию — хук (Achievements) минтит milestone-NFT
+    // в TBA пухлика. Пока хук не подключён (0), поведение прежнее.
+    function _unlockMilestone(uint8 stage) private {
+        address hook = achievements;
+        if (hook == address(0)) return;
+        IEvolutionHook(hook).onEvolved(MVP_TOKEN_ID, stage);
     }
 
     // Кламп входного значения: прибавка не вынесет статус за 100
