@@ -84,9 +84,162 @@ body {
   }
 }
 
+.critter-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.critter-waiting {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.waiting-note {
+  font-size: 17px;
+  color: #8fa9d6;
+  background: #ffffffbf;
+  border-radius: 18px;
+  padding: 8px 18px;
+  box-shadow: 0 6px 14px rgba(160, 130, 200, 0.16);
+}
+
+.care-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.care-button {
+  font-family: inherit;
+  font-size: 17px;
+  color: #5f4a86;
+  background: linear-gradient(180deg, #fff6cc 0%, #ffe9a8 100%);
+  border: none;
+  border-radius: 22px;
+  padding: 10px 22px;
+  cursor: pointer;
+  box-shadow: 0 6px 0 #efdc9c, 0 10px 18px rgba(160, 130, 200, 0.18);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.care-button:hover {
+  transform: translateY(-2px) scale(1.03);
+}
+
+.care-button:active {
+  transform: translateY(3px) scale(0.96);
+  box-shadow: 0 2px 0 #efdc9c, 0 6px 12px rgba(160, 130, 200, 0.18);
+}
+
+.toasts {
+  position: fixed;
+  left: 50%;
+  bottom: 34px;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.toast {
+  font-size: 17px;
+  color: #5f4a86;
+  background: #ffffffe8;
+  border-radius: 20px;
+  padding: 9px 20px;
+  box-shadow: 0 8px 20px rgba(160, 130, 200, 0.28);
+  animation: toast-pop 320ms ease;
+}
+
+.toast-feed {
+  background: #fff0f6;
+}
+
+.toast-play {
+  background: #effcff;
+}
+
+.toast-sleep {
+  background: #f3efff;
+}
+
+@keyframes toast-pop {
+  0% {
+    opacity: 0;
+    transform: translateY(14px) scale(0.9);
+  }
+  60% {
+    transform: translateY(0) scale(1.04);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes nom-nom {
+  0%,
+  100% {
+    transform: scale(1, 1);
+  }
+  30% {
+    transform: scale(1.08, 0.9);
+  }
+  60% {
+    transform: scale(0.94, 1.08);
+  }
+}
+
+@keyframes wiggle {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-7deg) translateY(-6px);
+  }
+  50% {
+    transform: rotate(6deg);
+  }
+  75% {
+    transform: rotate(-4deg) translateY(-4px);
+  }
+}
+
+@keyframes lull {
+  0%,
+  100% {
+    transform: scale(1.05, 0.92);
+  }
+  50% {
+    transform: scale(0.97, 1.06);
+  }
+}
+
+.critter.critter-action-feed {
+  animation: nom-nom 480ms ease-in-out 2;
+}
+
+.critter.critter-action-play {
+  animation: wiggle 720ms ease-in-out;
+}
+
+.critter.critter-action-sleep {
+  animation: lull 900ms ease-in-out;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .critter-body,
-  .critter-eyes {
+  .critter-eyes,
+  .toast,
+  .critter.critter-action-feed,
+  .critter.critter-action-play,
+  .critter.critter-action-sleep {
     animation: none;
   }
 }
