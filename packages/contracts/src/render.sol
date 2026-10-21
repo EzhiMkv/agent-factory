@@ -9,9 +9,19 @@ library Render {
     bytes internal constant _B64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
     string internal constant _INK = "#5B4F6E";
 
-    /// Токен-URI пухлика: inline SVG без хоста и метаданных снаружи
+    /// Мутация созревает только после первой эволюции (порог EVOLVE_LEVEL_1
+    /// в Critter.sol = 5). Константа дублируется, чтобы Render не зависел
+    /// от Critter — Critter и так импортирует Render, цикл недопустим.
+    uint8 internal constant MUTATION_MIN_LEVEL = 5;
+
+    /// Токен-URI пухлика: inline SVG без хоста и метаданных снаружи.
+    /// Перегрузка без уровня — малыш до эволюции (level 0, без мутаций).
     function art(uint256 dnaSeed) internal pure returns (string memory) {
-        return string(abi.encodePacked(DATA_URI_PREFIX, _b64Encode(bytes(_svg(dnaSeed)))));
+        return art(dnaSeed, 0);
+    }
+
+    function art(uint256 dnaSeed, uint8 level) internal pure returns (string memory) {
+        return string(abi.encodePacked(DATA_URI_PREFIX, _b64Encode(bytes(_svg(dnaSeed, level)))));
     }
 
     /// Цвет тела: 24 бит из ДНК, сдвинут на 2/3 пути к белому — чтобы пухлик
@@ -24,7 +34,26 @@ library Render {
         return _hexColor((r << 16) | (g << 8) | b);
     }
 
-    function _svg(uint256 dna) internal pure returns (string memory) {
+    /// Редкая мутация пухлика: 0 — обычная желейка, 1 — golden-искорки на
+    /// животике, 2 — golden беретик, 3 — искорки и беретик вместе.
+    /// Детерминировано от ДНК+level: одинаковые входы — одинаковый трейт.
+    /// Мутация — милый сюрприз первой эволюции: до MUTATION_MIN_LEVEL её не
+    /// бывает, а среди подросших пухликов она редкая (см. порог редкости).
+    function mutationTrait(uint256 dnaSeed, uint8 level) internal pure returns (uint8) {
+        if (level < MUTATION_MIN_LEVEL) {
+            return 0;
+        }
+        uint256 h = uint256(keccak256(abi.encodePacked(dnaSeed, level)));
+        // Редкость: мутация открывается, только если старший байт хеша попал
+        // в узкий диапазон 0..4 — 5 значений из 256 (≈2% подросших пухликов).
+        // Вид мутации выбирают младшие биты того же хеша.
+        if (h >> 248 >= 5) {
+            return 0;
+        }
+        return uint8(1 + (h % 3));
+    }
+
+    function _svg(uint256 dna, uint8 level) internal pure returns (string memory) {
         string memory fur = bodyColor(dna);
         return string(
             abi.encodePacked(
@@ -42,6 +71,7 @@ library Render {
                 _eyes(dna),
                 '<path d="M90 130 Q100 141 110 130" stroke="#5B4F6E" stroke-width="3.2" stroke-linecap="round" fill="none"/>',
                 _pattern(dna),
+                _mutationLayer(dna, level),
                 '</svg>'
             )
         );
@@ -129,6 +159,36 @@ library Render {
                 '<path d="M76 146 L77.5 148.8 L81 150.4 L77.5 152 L76 154.8 L74.5 152 L71 150.4 L74.5 148.8 Z" fill="#FFE9A8" opacity="0.9"/>'
             )
         );
+    }
+
+    /// Слой мутации поверх узора: golden-искорки на животике (трейт 1 и 3)
+    /// и/или мягкий golden беретик с помпоном (трейт 2 и 3). Пастельное
+    /// золото — приятный сюрприз, а не пугающая редкость: доктрина няшности.
+    /// Пустая строка для обычного пухлика — слой не рисуется вовсе.
+    function _mutationLayer(uint256 dna, uint8 level) internal pure returns (string memory) {
+        uint8 trait = mutationTrait(dna, level);
+        if (trait == 0) {
+            return "";
+        }
+        string memory sparkles = "";
+        if (trait == 1 || trait == 3) {
+            sparkles = string(
+                abi.encodePacked(
+                    '<path d="M84 141 L86.2 146.2 L91.4 148.4 L86.2 150.6 L84 155.8 L81.8 150.6 L76.6 148.4 L81.8 146.2 Z" fill="#FFD98E"/>',
+                    '<path d="M116 143 L118.2 148.2 L123.4 150.4 L118.2 152.6 L116 157.8 L113.8 152.6 L108.6 150.4 L113.8 148.2 Z" fill="#FFD98E" opacity="0.9"/>'
+                )
+            );
+        }
+        string memory hat = "";
+        if (trait == 2 || trait == 3) {
+            hat = string(
+                abi.encodePacked(
+                    '<path d="M78 55 Q100 28 122 55 Q100 64 78 55 Z" fill="#FFD98E"/>',
+                    '<circle cx="100" cy="29" r="5.5" fill="#FFF3D6"/>'
+                )
+            );
+        }
+        return string(abi.encodePacked(sparkles, hat));
     }
 
     function _hexColor(uint256 value) internal pure returns (string memory) {
