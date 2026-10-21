@@ -122,3 +122,30 @@ API, покрытие тестами. Verdict: approve / request-changes — в�
   тикет не закрыт
 - Всё, что нужно человеку перед мержем, — шли в PR-описание кратко:
   что, почему, как проверил
+
+## Шпаргалка агента (грабли из реальных прогонов)
+
+Экономь минуты ориентировки — типовые ситуации уже разобраны:
+
+- Тесты: контракты — Foundry (`forge test`; forge живёт в
+  `~/.foundry/bin`), web — vitest (`pnpm -r test`). После мержей,
+  менявших lockfile, — `pnpm install --frozen-lockfile` в корне, иначе
+  «Failed to resolve import "viem"».
+- Кириллица в Solidity-строках — только через `unicode"..."`, иначе
+  compile error (грабля tc-08).
+- solc 0.8.x: константы чужого контракта через тип (`Critter.CONST`)
+  не читаются — Error 9582; бери с инстанса (`critter.CONST()`) или
+  зеркаль константу локально в тесте (грабля tc-05).
+- Моки viem для web-тестов — по образцам `packages/web/src/care.test.ts`
+  и `LifeFeed.test.tsx`; реальная сеть из тестов не трогается никогда.
+- Секреты и адреса: корневой `.env` (деплой-ключ, judge), `packages/web/.env.example`
+  (`VITE_*`: адреса контрактов, ключ демо-аккаунта). В коде ключей нет.
+- Деплой-скрипт, сухой прогон: anvil + прогрев блоков
+  (`cast rpc anvil_mine 3 0`), иначе `panic 0x11` от
+  `blockhash(block.number - 1)` на высоте 0; проверяй порт anvil на
+  зомби-процессы прошлой сессии; `broadcast/` в git не коммитится.
+- Judge читает только process.env: `set -a; source .env; set +a;
+  node judge/index.mjs --branch ...` (из корня репо).
+- MVP: один пухлик, `MVP_TOKEN_ID = 1`. Стиль коммитов `(<NNN-tc-XX>) …`,
+  лог прогона — по `docs/runs/TEMPLATE.md`, план тикета — в
+  `docs/runs/<дата>-<тикер>-plan.md`.
