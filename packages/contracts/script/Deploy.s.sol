@@ -38,6 +38,5 @@ contract DeployScript is Script {
         console.log("Critter:                %s", address(critter));
         console.log("minted tokenId:         %s (owner: %s)", tokenId, critter.ownerOf(tokenId));
         console.log("VITE_CRITTER_ADDRESS=%s", address(critter));
-        console.log("mutation module ready");
     }
 }
