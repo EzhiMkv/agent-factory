@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import CritterView from "./CritterView";
 import { QUIET_NOTE, SENT_NOTE, sendCare } from "./care";
+import LifeFeed from "./LifeFeed";
 import { Toasts, useCareToasts, type CareAction } from "./Toast";
 import "./App.css";
 
@@ -53,6 +54,8 @@ export default function App() {
           </button>
         ))}
       </div>
+
+      <LifeFeed note={note} />
 
       <p className="scene-hint">Сеть заглянет к нам чуть позже — пока реакции живут в сцене</p>
     </main>
