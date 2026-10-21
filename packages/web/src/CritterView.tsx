@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { createPublicClient, http, parseAbi } from "viem";
 import { baseSepolia } from "viem/chains";
 import type { CareAction } from "./Toast";
+import { critterAddress } from "./wallet";
 
 type Phase =
   | { kind: "waiting" }
@@ -13,12 +14,8 @@ const critterAbi = parseAbi(["function tokenURI(uint256) view returns (string)"]
 
 const DEPLOY_NOTE = "Ждём-ждем деплоя… Пухлик пока гостит в заглушке сцены :3";
 const LOADING_NOTE = "Пыхтим… зовём пухлика из сети";
+const BUSY_NOTE = "Пыхтим… несем заботу в сеть";
 const SLEEPY_NOTE = "Пухлик зазевался — попробуем ещё разочек?";
-
-function critterAddress(): `0x${string}` | null {
-  const raw = import.meta.env.VITE_CRITTER_ADDRESS?.trim();
-  return raw && raw.length > 0 ? (raw as `0x${string}`) : null;
-}
 
 async function fetchTokenUri(address: `0x${string}`, rpcUrl: string | undefined): Promise<string> {
   const client = createPublicClient({ chain: baseSepolia, transport: http(rpcUrl) });
@@ -34,10 +31,11 @@ async function fetchTokenUri(address: `0x${string}`, rpcUrl: string | undefined)
   return uri;
 }
 
-function DemoJelly({ reaction }: { reaction?: CareAction | null }) {
+function DemoJelly({ reaction, busy }: { reaction?: CareAction | null; busy: boolean }) {
   const actionClass = reaction ? ` critter-action-${reaction}` : "";
+  const busyClass = busy ? " critter-busy" : "";
   return (
-    <svg className={`critter${actionClass}`} viewBox="0 0 240 240" role="img" aria-label="Пухлик-заглушка">
+    <svg className={`critter${actionClass}${busyClass}`} viewBox="0 0 240 240" role="img" aria-label="Пухлик-заглушка">
       <defs>
         <radialGradient id="jelly" cx="35%" cy="25%" r="80%">
           <stop offset="0%" stopColor="#d8fbff" />
@@ -68,7 +66,13 @@ function DemoJelly({ reaction }: { reaction?: CareAction | null }) {
   );
 }
 
-export default function CritterView({ reaction }: { reaction?: CareAction | null }) {
+export default function CritterView({
+  reaction,
+  busy = false,
+}: {
+  reaction?: CareAction | null;
+  busy?: boolean;
+}) {
   const [phase, setPhase] = useState<Phase>(() =>
     critterAddress() === null ? { kind: "waiting" } : { kind: "loading" },
   );
@@ -102,15 +106,15 @@ export default function CritterView({ reaction }: { reaction?: CareAction | null
     <div className="critter-stage" data-reaction={reaction ?? undefined}>
       {phase.kind === "ready" ? (
         <img
-          className={`critter${reaction ? ` critter-action-${reaction}` : ""}`}
+          className={`critter${reaction ? ` critter-action-${reaction}` : ""}${busy ? " critter-busy" : ""}`}
           src={phase.svgUri}
           alt="Пухлик из он-чейн арта"
         />
       ) : (
-        <DemoJelly reaction={reaction} />
+        <DemoJelly reaction={reaction} busy={busy} />
       )}
       {phase.kind === "ready" ? (
-        <p className="critter-speech">Привет! Я твой пухлик :3</p>
+        <p className="critter-speech">{busy ? BUSY_NOTE : "Привет! Я твой пухлик :3"}</p>
       ) : (
         <div className="critter-waiting">
           <p className="waiting-note">{note}</p>

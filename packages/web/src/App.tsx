@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import CritterView from "./CritterView";
+import { QUIET_NOTE, SENT_NOTE, sendCare } from "./care";
 import { Toasts, useCareToasts, type CareAction } from "./Toast";
 import "./App.css";
 
@@ -12,12 +13,22 @@ const CARE_BUTTONS: { action: CareAction; label: string }[] = [
 const REACTION_MS = 900;
 
 export default function App() {
-  const { toasts, pop } = useCareToasts();
+  const { toasts, pop, note } = useCareToasts();
   const [reaction, setReaction] = useState<CareAction | null>(null);
+  const [busy, setBusy] = useState(false);
 
   const react = (action: CareAction) => {
     pop(action);
     setReaction(action);
+    void deliverCare(action);
+  };
+
+  const deliverCare = async (action: CareAction) => {
+    setBusy(true);
+    const result = await sendCare(action);
+    setBusy(false);
+    if (result.kind === "sent") note(SENT_NOTE);
+    else if (result.kind === "quiet") note(QUIET_NOTE);
   };
 
   useEffect(() => {
@@ -31,7 +42,7 @@ export default function App() {
       <h1 className="scene-title">Пухляндия</h1>
       <p className="scene-subtitle">Встреча с пухликом</p>
 
-      <CritterView reaction={reaction} />
+      <CritterView reaction={reaction} busy={busy} />
 
       <Toasts items={toasts} />
 

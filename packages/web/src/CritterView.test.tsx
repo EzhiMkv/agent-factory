@@ -58,4 +58,20 @@ describe("CritterView — сцена с нежными состояниями", 
     render(<CritterView />);
     expect(await screen.findByText(/Пухлик зазевался/)).toBeTruthy();
   });
+
+  it("busy-состояние пыхтит: класс-анимация и заботливая реплика", async () => {
+    stubAddress(ADDRESS);
+    readContract.mockResolvedValue("data:image/svg+xml;base64,PHN2Zy8+");
+    render(<CritterView busy />);
+    expect(await screen.findByText(/Пыхтим… несем заботу в сеть/)).toBeTruthy();
+    expect(document.querySelector(".critter-busy")).toBeTruthy();
+  });
+
+  it("без busy пухлик просто здоровается", async () => {
+    stubAddress(ADDRESS);
+    readContract.mockResolvedValue("data:image/svg+xml;base64,PHN2Zy8+");
+    render(<CritterView />);
+    expect(await screen.findByText("Привет! Я твой пухлик :3")).toBeTruthy();
+    expect(document.querySelector(".critter-busy")).toBeNull();
+  });
 });
