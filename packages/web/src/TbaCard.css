@@ -1,0 +1,153 @@
+.tba-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: min(540px, 92vw);
+  background: #ffffffe8;
+  border-radius: 26px;
+  padding: 18px 20px;
+  box-shadow: 0 10px 24px rgba(160, 130, 200, 0.2);
+}
+
+.tba-card-title {
+  font-size: 22px;
+  color: #7a5fa0;
+  letter-spacing: 1px;
+}
+
+.tba-card-subtitle {
+  font-size: 14px;
+  color: #b0a4cf;
+  margin-top: -6px;
+}
+
+.tba-wallet {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  background: #fff0f6;
+  border-radius: 18px;
+  padding: 8px 16px;
+  box-shadow: 0 6px 14px rgba(255, 190, 230, 0.25);
+}
+
+.tba-address {
+  font-size: 15px;
+  color: #5f4a86;
+  letter-spacing: 0.5px;
+}
+
+.tba-scan-link {
+  font-size: 13px;
+  color: #5d7fbe;
+  text-decoration: none;
+  border-bottom: 1px dashed #b8cdf0;
+  white-space: nowrap;
+}
+
+.tba-scan-link:hover {
+  color: #7a95d8;
+}
+
+.tba-balance {
+  font-size: 18px;
+  color: #5f4a86;
+  background: #fff6cc;
+  border-radius: 18px;
+  padding: 6px 16px;
+  box-shadow: 0 6px 14px rgba(239, 220, 156, 0.35);
+}
+
+.tba-achievements-title {
+  font-size: 17px;
+  color: #9a8fc0;
+}
+
+.tba-achievement-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.tba-achievement {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  background: #f3efff;
+  border-radius: 18px;
+  padding: 8px 16px;
+  box-shadow: 0 6px 14px rgba(160, 130, 200, 0.16);
+  animation: tba-pop 320ms ease;
+}
+
+.tba-achievement-name {
+  font-size: 15px;
+  color: #5f4a86;
+}
+
+.tba-achievement-id {
+  font-size: 12px;
+  color: #b0a4cf;
+  white-space: nowrap;
+}
+
+/* Свежая ачивка — маленький праздник: пастельная радуга в желе */
+.tba-achievement-festive {
+  background: linear-gradient(135deg, #ffe8f7 0%, #fff6cc 55%, #e8fbff 100%);
+  box-shadow: 0 8px 20px rgba(255, 190, 230, 0.45);
+  animation: tba-party 900ms ease-in-out infinite alternate;
+}
+
+.tba-achievement-festive .tba-achievement-name {
+  font-weight: bold;
+  color: #a04a8c;
+}
+
+.tba-note {
+  font-size: 15px;
+  color: #9a8fc0;
+  background: #ffffffbf;
+  border-radius: 18px;
+  padding: 8px 18px;
+  text-align: center;
+}
+
+.tba-waiting {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+@keyframes tba-pop {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes tba-party {
+  0% {
+    transform: scale(1) rotate(-0.4deg);
+  }
+  100% {
+    transform: scale(1.02) rotate(0.4deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tba-achievement,
+  .tba-achievement-festive {
+    animation: none;
+  }
+}

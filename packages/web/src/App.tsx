@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import CritterView from "./CritterView";
 import { QUIET_NOTE, SENT_NOTE, sendCare } from "./care";
 import LifeFeed from "./LifeFeed";
+import TbaCard from "./TbaCard";
 import { Toasts, useCareToasts, type CareAction } from "./Toast";
 import "./App.css";
 
@@ -54,6 +55,8 @@ export default function App() {
           </button>
         ))}
       </div>
+
+      <TbaCard />
 
       <LifeFeed note={note} />
 

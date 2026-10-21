@@ -4,4 +4,6 @@ interface ImportMetaEnv {
   readonly VITE_CRITTER_ADDRESS?: string;
   readonly VITE_RPC_URL?: string;
   readonly VITE_DEMO_KEY?: string;
+  readonly VITE_REGISTRY_ADDRESS?: string;
+  readonly VITE_ACHIEVEMENTS_ADDRESS?: string;
 }
