@@ -21,10 +21,16 @@ contract Critter {
     event Played(uint8 delta);
     event Slept(uint8 delta);
 
+    // Эволюция: событие ровно при пересечении порога актов заботы
+    event Evolved(uint8 stage);
+
     string public constant name = "Puhlyandiya Critter";
     string public constant symbol = "PUH";
 
     uint256 public constant MVP_TOKEN_ID = 1;
+
+    uint8 public constant EVOLVE_LEVEL_1 = 5; // 5-й акт заботы → стадия 1
+    uint8 public constant EVOLVE_LEVEL_2 = 15; // 15-й акт заботы → стадия 2
 
     address public owner;
     uint256 private _nextTokenId = 1;
@@ -100,6 +106,7 @@ contract Critter {
         uint8 applied = _raise(s.satiety, amount);
         s.satiety += applied;
         emit Fed(applied);
+        _afterCareAct(s);
     }
 
     function play(uint8 amount) external onlyCritterOwner {
@@ -111,6 +118,7 @@ contract Critter {
         uint8 drain = s.energy < amount ? s.energy : amount;
         s.energy -= drain;
         emit Played(applied);
+        _afterCareAct(s);
     }
 
     function sleep(uint8 amount) external onlyCritterOwner {
@@ -118,6 +126,21 @@ contract Critter {
         uint8 applied = _raise(s.energy, amount);
         s.energy += applied;
         emit Slept(applied);
+        _afterCareAct(s);
+    }
+
+    // Каждый акт заботы растит пухлика: +1 уровень, эволюция на порогах.
+    // Стадия монотонна: порог срабатывает ровно один раз, обратно не откатывается.
+    function _afterCareAct(CritterStatus storage s) private {
+        s.level++;
+        if (s.level == EVOLVE_LEVEL_1 && s.stage < 1) {
+            s.stage = 1;
+            emit Evolved(1);
+        }
+        if (s.level == EVOLVE_LEVEL_2 && s.stage < 2) {
+            s.stage = 2;
+            emit Evolved(2);
+        }
     }
 
     // Кламп входного значения: прибавка не вынесет статус за 100
