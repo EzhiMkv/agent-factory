@@ -168,6 +168,10 @@ body {
   background: #f3efff;
 }
 
+.toast-quiet {
+  background: #fff2df;
+}
+
 @keyframes toast-pop {
   0% {
     opacity: 0;
@@ -221,6 +225,20 @@ body {
   }
 }
 
+@keyframes tender-wobble {
+  0%,
+  100% {
+    transform: scale(1, 1);
+  }
+  50% {
+    transform: scale(1.05, 0.95);
+  }
+}
+
+.critter.critter-busy {
+  animation: tender-wobble 620ms ease-in-out infinite;
+}
+
 .critter.critter-action-feed {
   animation: nom-nom 480ms ease-in-out 2;
 }
@@ -237,6 +255,7 @@ body {
   .critter-body,
   .critter-eyes,
   .toast,
+  .critter.critter-busy,
   .critter.critter-action-feed,
   .critter.critter-action-play,
   .critter.critter-action-sleep {
