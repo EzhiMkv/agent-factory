@@ -3,6 +3,7 @@ pragma solidity ^0.8.13;
 
 import {Test, console} from "forge-std/Test.sol";
 import {Critter} from "../src/Critter.sol";
+import {Render} from "../src/render.sol";
 
 contract CritterTest is Test {
     Critter public critterNFT;
@@ -189,5 +190,30 @@ contract CritterTest is Test {
         vm.prank(alice);
         vm.expectRevert(bytes("no critter"));
         critterNFT.feed(10);
+    }
+
+    // ---------- tc-03: он-чейн арт из ДНК ----------
+
+    function test_TokenUriIsSvgRenderedFromDna() public {
+        uint256 tokenId = _mintToAlice();
+
+        string memory uri = critterNFT.tokenURI(tokenId);
+        assertEq(uri, Render.art(critterNFT.critter(tokenId).dnaSeed));
+        assertTrue(_startsWith(uri, "data:image/svg+xml;base64,"), unicode"URI — data-URI SVG желейки");
+    }
+
+    function test_TokenUriUnknownTokenReverts() public {
+        vm.expectRevert(bytes("no critter"));
+        critterNFT.tokenURI(999);
+    }
+
+    function _startsWith(string memory s, string memory prefix) internal pure returns (bool) {
+        bytes memory b = bytes(s);
+        bytes memory p = bytes(prefix);
+        if (b.length < p.length) return false;
+        for (uint256 i = 0; i < p.length; i++) {
+            if (b[i] != p[i]) return false;
+        }
+        return true;
     }
 }
