@@ -32,7 +32,7 @@
       "change": "003-critter-core",
       "section": "tc-04",
       "slug": "уход-feed-play-sleep",
-      "done": false,
+      "done": true,
       "text": "уход: feed/play/sleep обновляют статусы 0..100 с clamp, события Fed/Played/Slept",
       "tasksPath": "/home/e/projects/agent-factory/openspec/changes/003-critter-core/tasks.md"
     },
@@ -77,7 +77,7 @@
       "change": "003-critter-core",
       "section": "tc-09",
       "slug": "web-сцена-пухлик-из",
-      "done": false,
+      "done": true,
       "text": "web сцена: пухлик из on-chain tokenURI, реакции корм/игра/сон (анимации + тосты «Ням!»)",
       "tasksPath": "/home/e/projects/agent-factory/openspec/changes/003-critter-core/tasks.md"
     },
@@ -145,7 +145,7 @@
     },
     {
       "id": "003-tc-04",
-      "state": "open",
+      "state": "done",
       "text": "уход: feed/play/sleep обновляют статусы 0..100 с clamp, события Fed/Played/Slept"
     },
     {
@@ -170,7 +170,7 @@
     },
     {
       "id": "003-tc-09",
-      "state": "open",
+      "state": "done",
       "text": "web сцена: пухлик из on-chain tokenURI, реакции корм/игра/сон (анимации + тосты «Ням!»)"
     },
     {

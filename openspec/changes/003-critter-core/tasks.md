@@ -33,7 +33,7 @@ tc-10..tc-12 — от tc-02 и tc-13; tc-07 независим. Пометка *
     другой сид → другой цвет; URI декодируется как svg+xml).
 
 ## tc-04
-- [ ] уход: feed/play/sleep обновляют статусы 0..100 с clamp, события Fed/Played/Slept
+- [x] уход: feed/play/sleep обновляют статусы 0..100 с clamp, события Fed/Played/Slept
   - Файлы: `src/Critter.sol`, `test/Critter.t.sol`
   - Требования: функции `feed(uint8)`,`play(uint8)`,`sleep(uint8)` от
     владельца; только по одному живому существу (id == 1 в MVP); входные
@@ -83,7 +83,7 @@ tc-10..tc-12 — от tc-02 и tc-13; tc-07 независим. Пометка *
   - Критерий: `forge test` — после эволюции баланс TBA == 1.
 
 ## tc-09
-- [ ] web сцена: пухлик из on-chain tokenURI, реакции корм/игра/сон (анимации + тосты «Ням!»)
+- [x] web сцена: пухлик из on-chain tokenURI, реакции корм/игра/сон (анимации + тосты «Ням!»)
   - Файлы: `packages/web/src/{CritterView,Toast}.tsx`, тест vitest
   - Требования: TypeScript strict; адрес контракта из `import.meta.env
     .VITE_CRITTER_ADDRESS` (читается из .env, при отсутствии — милый
