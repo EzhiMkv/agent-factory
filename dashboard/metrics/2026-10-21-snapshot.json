@@ -23,7 +23,7 @@
       "change": "003-critter-core",
       "section": "tc-03",
       "slug": "он-чейн-арт-tokenuri",
-      "done": false,
+      "done": true,
       "text": "он-чейн арт: tokenURI как data-URI SVG желейки из ДНК, снапшот-тест",
       "tasksPath": "/home/e/projects/agent-factory/openspec/changes/003-critter-core/tasks.md"
     },
@@ -86,7 +86,7 @@
       "change": "003-critter-core",
       "section": "tc-10",
       "slug": "web-burner-кошел-к",
-      "done": false,
+      "done": true,
       "text": "web burner-кошелёк + Base Sepolia: отправка транзакций ухода в демо-сеть",
       "tasksPath": "/home/e/projects/agent-factory/openspec/changes/003-critter-core/tasks.md"
     },
@@ -140,7 +140,7 @@
     },
     {
       "id": "003-tc-03",
-      "state": "open",
+      "state": "done",
       "text": "он-чейн арт: tokenURI как data-URI SVG желейки из ДНК, снапшот-тест"
     },
     {
@@ -175,7 +175,7 @@
     },
     {
       "id": "003-tc-10",
-      "state": "open",
+      "state": "done",
       "text": "web burner-кошелёк + Base Sepolia: отправка транзакций ухода в демо-сеть"
     },
     {
