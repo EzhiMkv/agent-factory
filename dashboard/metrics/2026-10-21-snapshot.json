@@ -1,0 +1,202 @@
+{
+  "queue": [
+    {
+      "id": "003-tc-01",
+      "change": "003-critter-core",
+      "section": "tc-01",
+      "slug": "скелет-полигона-pnpm-workspace",
+      "done": true,
+      "text": "скелет полигона: pnpm workspace, forge-пакет с зелёным смок-тестом, Vite-клиент с няшной сценой-заглушкой",
+      "tasksPath": "/home/e/projects/agent-factory/openspec/changes/003-critter-core/tasks.md"
+    },
+    {
+      "id": "003-tc-02",
+      "change": "003-critter-core",
+      "section": "tc-02",
+      "slug": "контракт-critter-хатч-из",
+      "done": true,
+      "text": "контракт Critter: хатч из ДНК-сида, минт демо-аккаунту, события Hatched, тесты Foundry",
+      "tasksPath": "/home/e/projects/agent-factory/openspec/changes/003-critter-core/tasks.md"
+    },
+    {
+      "id": "003-tc-03",
+      "change": "003-critter-core",
+      "section": "tc-03",
+      "slug": "он-чейн-арт-tokenuri",
+      "done": false,
+      "text": "он-чейн арт: tokenURI как data-URI SVG желейки из ДНК, снапшот-тест",
+      "tasksPath": "/home/e/projects/agent-factory/openspec/changes/003-critter-core/tasks.md"
+    },
+    {
+      "id": "003-tc-04",
+      "change": "003-critter-core",
+      "section": "tc-04",
+      "slug": "уход-feed-play-sleep",
+      "done": false,
+      "text": "уход: feed/play/sleep обновляют статусы 0..100 с clamp, события Fed/Played/Slept",
+      "tasksPath": "/home/e/projects/agent-factory/openspec/changes/003-critter-core/tasks.md"
+    },
+    {
+      "id": "003-tc-05",
+      "change": "003-critter-core",
+      "section": "tc-05",
+      "slug": "эволюция-level-раст-т",
+      "done": false,
+      "text": "эволюция: level растёт от актов заботы, пороги → stage 0..2, событие Evolved",
+      "tasksPath": "/home/e/projects/agent-factory/openspec/changes/003-critter-core/tasks.md"
+    },
+    {
+      "id": "003-tc-06",
+      "change": "003-critter-core",
+      "section": "tc-06",
+      "slug": "редкая-мутация-детерминированно-из",
+      "done": false,
+      "text": "редкая мутация: детерминированно из ДНК+level, вспышка в Evolved-событии",
+      "tasksPath": "/home/e/projects/agent-factory/openspec/changes/003-critter-core/tasks.md"
+    },
+    {
+      "id": "003-tc-07",
+      "change": "003-critter-core",
+      "section": "tc-07",
+      "slug": "erc-6551-tba-минимальный",
+      "done": true,
+      "text": "ERC-6551 TBA: минимальный Registry + TokenBoundAccount у питомца, адрес кошелька виден",
+      "tasksPath": "/home/e/projects/agent-factory/openspec/changes/003-critter-core/tasks.md"
+    },
+    {
+      "id": "003-tc-08",
+      "change": "003-critter-core",
+      "section": "tc-08",
+      "slug": "ачивка-за-эволюцию-минт",
+      "done": false,
+      "text": "ачивка за эволюцию: минт маленького NFT прямо в TBA пухлика",
+      "tasksPath": "/home/e/projects/agent-factory/openspec/changes/003-critter-core/tasks.md"
+    },
+    {
+      "id": "003-tc-09",
+      "change": "003-critter-core",
+      "section": "tc-09",
+      "slug": "web-сцена-пухлик-из",
+      "done": false,
+      "text": "web сцена: пухлик из on-chain tokenURI, реакции корм/игра/сон (анимации + тосты «Ням!»)",
+      "tasksPath": "/home/e/projects/agent-factory/openspec/changes/003-critter-core/tasks.md"
+    },
+    {
+      "id": "003-tc-10",
+      "change": "003-critter-core",
+      "section": "tc-10",
+      "slug": "web-burner-кошел-к",
+      "done": false,
+      "text": "web burner-кошелёк + Base Sepolia: отправка транзакций ухода в демо-сеть",
+      "tasksPath": "/home/e/projects/agent-factory/openspec/changes/003-critter-core/tasks.md"
+    },
+    {
+      "id": "003-tc-11",
+      "change": "003-critter-core",
+      "section": "tc-11",
+      "slug": "лента-жизни-подписка-на",
+      "done": false,
+      "text": "лента жизни: подписка на события контракта, тосты-события, ссылка на basescan",
+      "tasksPath": "/home/e/projects/agent-factory/openspec/changes/003-critter-core/tasks.md"
+    },
+    {
+      "id": "003-tc-12",
+      "change": "003-critter-core",
+      "section": "tc-12",
+      "slug": "карточка-tba-адрес-баланс",
+      "done": false,
+      "text": "карточка TBA: адрес, баланс, ачивки питомца в UI",
+      "tasksPath": "/home/e/projects/agent-factory/openspec/changes/003-critter-core/tasks.md"
+    },
+    {
+      "id": "003-tc-13",
+      "change": "003-critter-core",
+      "section": "tc-13",
+      "slug": "деплой-на-base-sepolia",
+      "done": false,
+      "text": "деплой на Base Sepolia: script Deploy.s.sol + верификация на basescan, кран-процедура в README",
+      "tasksPath": "/home/e/projects/agent-factory/openspec/changes/003-critter-core/tasks.md"
+    },
+    {
+      "id": "003-tc-14",
+      "change": "003-critter-core",
+      "section": "tc-14",
+      "slug": "hot-микро-няш-при",
+      "done": false,
+      "text": "**[hot]** микро-няш: при клике на пухлика — squash&stretch + случайная реплика",
+      "tasksPath": "/home/e/projects/agent-factory/openspec/changes/003-critter-core/tasks.md"
+    }
+  ],
+  "board": [
+    {
+      "id": "003-tc-01",
+      "state": "done",
+      "text": "скелет полигона: pnpm workspace, forge-пакет с зелёным смок-тестом, Vite-клиент с няшной сценой-заглушкой"
+    },
+    {
+      "id": "003-tc-02",
+      "state": "done",
+      "text": "контракт Critter: хатч из ДНК-сида, минт демо-аккаунту, события Hatched, тесты Foundry"
+    },
+    {
+      "id": "003-tc-03",
+      "state": "open",
+      "text": "он-чейн арт: tokenURI как data-URI SVG желейки из ДНК, снапшот-тест"
+    },
+    {
+      "id": "003-tc-04",
+      "state": "open",
+      "text": "уход: feed/play/sleep обновляют статусы 0..100 с clamp, события Fed/Played/Slept"
+    },
+    {
+      "id": "003-tc-05",
+      "state": "open",
+      "text": "эволюция: level растёт от актов заботы, пороги → stage 0..2, событие Evolved"
+    },
+    {
+      "id": "003-tc-06",
+      "state": "open",
+      "text": "редкая мутация: детерминированно из ДНК+level, вспышка в Evolved-событии"
+    },
+    {
+      "id": "003-tc-07",
+      "state": "done",
+      "text": "ERC-6551 TBA: минимальный Registry + TokenBoundAccount у питомца, адрес кошелька виден"
+    },
+    {
+      "id": "003-tc-08",
+      "state": "open",
+      "text": "ачивка за эволюцию: минт маленького NFT прямо в TBA пухлика"
+    },
+    {
+      "id": "003-tc-09",
+      "state": "open",
+      "text": "web сцена: пухлик из on-chain tokenURI, реакции корм/игра/сон (анимации + тосты «Ням!»)"
+    },
+    {
+      "id": "003-tc-10",
+      "state": "open",
+      "text": "web burner-кошелёк + Base Sepolia: отправка транзакций ухода в демо-сеть"
+    },
+    {
+      "id": "003-tc-11",
+      "state": "open",
+      "text": "лента жизни: подписка на события контракта, тосты-события, ссылка на basescan"
+    },
+    {
+      "id": "003-tc-12",
+      "state": "open",
+      "text": "карточка TBA: адрес, баланс, ачивки питомца в UI"
+    },
+    {
+      "id": "003-tc-13",
+      "state": "open",
+      "text": "деплой на Base Sepolia: script Deploy.s.sol + верификация на basescan, кран-процедура в README"
+    },
+    {
+      "id": "003-tc-14",
+      "state": "open",
+      "text": "**[hot]** микро-няш: при клике на пухлика — squash&stretch + случайная реплика"
+    }
+  ]
+}

@@ -11,7 +11,7 @@ tc-10..tc-12 — от tc-02 и tc-13; tc-07 независим. Пометка *
     истории git (см. README «Что делать следующей сессии», пункт 1).
 
 ## tc-02
-- [ ] контракт Critter: хатч из ДНК-сида, минт демо-аккаунту, события Hatched, тесты Foundry
+- [x] контракт Critter: хатч из ДНК-сида, минт демо-аккаунту, события Hatched, тесты Foundry
   - Файлы: `packages/contracts/src/Critter.sol`,
     `packages/contracts/test/Critter.t.sol`
   - Требования: ERC-721 минимально (mint/ownerOf/tokenURI заглушка до
@@ -64,7 +64,7 @@ tc-10..tc-12 — от tc-02 и tc-13; tc-07 независим. Пометка *
     дефолт и разные сиды.
 
 ## tc-07
-- [ ] ERC-6551 TBA: минимальный Registry + TokenBoundAccount у питомца, адрес кошелька виден
+- [x] ERC-6551 TBA: минимальный Registry + TokenBoundAccount у питомца, адрес кошелька виден
   - Файлы: `src/erc6551/Registry.sol`, `src/erc6551/TokenBoundAccount.sol`,
     тесты; НЕ менять Critter (связь — отдельным тикетом tc-08)
   - Требования: Registry: `token()`/`create()` соответствует ERC-6551
