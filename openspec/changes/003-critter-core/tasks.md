@@ -44,7 +44,7 @@ tc-10..tc-12 — от tc-02 и tc-13; tc-07 независим. Пометка *
     владелец, нулевая энергия), события фиксируются (vm.expectEmit).
 
 ## tc-05
-- [ ] эволюция: level растёт от актов заботы, пороги → stage 0..2, событие Evolved
+- [x] эволюция: level растёт от актов заботы, пороги → stage 0..2, событие Evolved
   - Файлы: `src/Critter.sol`, `test/Evolution.t.sol`
   - Требования: каждый акт +1 ур. за акт; пороги: 5 → stage 1, 15 →
     stage 2 (стадия только растёт); событие
@@ -122,7 +122,7 @@ tc-10..tc-12 — от tc-02 и tc-13; tc-07 независим. Пометка *
   - Критерий: vitest на компоненте с мок-данными; strict.
 
 ## tc-13
-- [ ] деплой на Base Sepolia: script Deploy.s.sol + верификация на basescan, кран-процедура в README
+- [x] деплой на Base Sepolia: script Deploy.s.sol + верификация на basescan, кран-процедура в README
   - Файлы: `script/Deploy.s.sol`, доки `docs/deploy-steps.md`
   - Требования: деплой registry + account + Critter в правильной
     последовательности; читает `DEPLOYER_PRIVATE_KEY`, RPC URL из env;
