@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
+import {Render} from "./render.sol";
+
 contract Critter {
     struct CritterStatus {
         uint256 dnaSeed;
@@ -77,9 +79,10 @@ contract Critter {
         return _balances[account];
     }
 
-    function tokenURI(uint256) external pure returns (string memory) {
-        // Заглушка до tc-03: он-чейн SVG-рендер из ДНК
-        return "https://puhlyandiya.example/todo/tc-03";
+    function tokenURI(uint256 tokenId) external view returns (string memory) {
+        // tc-03: арт пухлика рисуется on-chain из ДНК — data-URI SVG без хоста
+        require(_critters[tokenId].hatched, "no critter");
+        return Render.art(_critters[tokenId].dnaSeed);
     }
 
     function critter(uint256 tokenId) external view returns (CritterStatus memory) {
