@@ -48,6 +48,30 @@ ANVIL_RPC_URL=             # http://127.0.0.1:8545 (только локальн�
    Если пусто — faucet иногда подкапризничает: попробуй позже или с
    другого браузера.
 
+### 1а. Если кошелёк пуст (проверенный путь без денег, 2026-10-21)
+
+Alchemy/QuickNode/Chainstack требуют ≥0.001 ETH на Ethereum mainnet
+(анти-сибил) — для пустого burner-кошелька они закрыты. Путь без денег:
+
+1. [Google Cloud Web3 faucet](https://cloud.google.com/application/web3/faucet/ethereum/sepolia):
+   вход через Google-аккаунт, майнет-баланс НЕ нужен. Вставь адрес
+   демо-деплоера, получи ~0.05 **Sepolia** ETH (сеть Ethereum Sepolia!).
+2. Проверь: `cast balance <АДРЕС> --rpc-url https://ethereum-sepolia-rpc.publicnode.com`.
+3. Перемести ETH на Base Sepolia официальным мостом через cast
+   (MetaMask не нужен; адрес L1StandardBridge сверен по docs.base.org):
+
+   ```bash
+   cast send 0xfd0Bf71F60660E2f608ed56e1659C450eB113120 \
+     "bridgeETH(uint32,bytes)" 100000 0x --value 0.03ether \
+     --private-key "$DEPLOYER_PRIVATE_KEY" \
+     --rpc-url https://ethereum-sepolia-rpc.publicnode.com
+   ```
+
+4. Зачисление на L2 занимает от ~2 до ~20 минут:
+   `cast balance <АДРЕС> --rpc-url $BASE_SEPOLIA_RPC_URL` — жди 0.03.
+   Запасной кран вообще без аккаунтов: [PoW-кран pk910](https://sepolia-faucet.pk910.de)
+   (майнинг Sepolia ETH в браузере) + тот же мост.
+
 ## 2. Сухой прогон деплоя на anvil (критерий тикета)
 
 Anvil запускается в отдельном терминале:

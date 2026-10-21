@@ -130,6 +130,6 @@ describe("LifeFeed — лента жизни с нежными состояни�
     emitLogs([{ eventName: "Slept", args: { delta: 30 }, transactionHash: TX }]);
     act(() => lastWatchConfig().onError());
     expect(screen.getByText(/Сеть притихла/)).toBeTruthy();
-    expect(screen.getByText(/Пухлик отдохнул|Силки пухлика \+30/)).toBeTruthy();
+    expect(screen.getByText(/Пухлик отдохнул|Силы пухлика \+30/)).toBeTruthy();
   });
 });

@@ -5,6 +5,7 @@ import App from "./App";
 
 afterEach(() => {
   vi.useRealTimers();
+  vi.unstubAllEnvs();
 });
 
 describe("сцена «встреча с пухликом»", () => {
@@ -14,6 +15,8 @@ describe("сцена «встреча с пухликом»", () => {
   });
 
   it("до деплоя ждём нежно, без криков", () => {
+    // Адрес в локальном .env не должен решать исход теста — стабим явно
+    vi.stubEnv("VITE_CRITTER_ADDRESS", "");
     render(<App />);
     expect(screen.getByText(/Ждём-ждем деплоя/)).toBeTruthy();
   });

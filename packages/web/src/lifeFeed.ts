@@ -88,7 +88,7 @@ export function lifeEventLine(parsed: ParsedLifeEvent): string {
     case "slept":
       return parsed.delta === null
         ? "Споки-споки… пухлик отдохнул!"
-        : `Споки-споки… Силки пухлика +${parsed.delta}`;
+        : `Споки-споки… Силы пухлика +${parsed.delta}`;
     case "evolved":
       return parsed.stage === null
         ? "Пухлик вырос! Ура-ура!"
