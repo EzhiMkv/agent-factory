@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Пухляндия — конвейер</title>
+<style>
+  :root {
+    --bg: #fdf6f4; --card: #ffffff; --ink: #4a4458; --soft: #8d86a0;
+    --mint: #d5f0e3; --mint-ink: #2e7d5b; --peach: #ffe3d4; --peach-ink: #c96a3d;
+    --lav: #ece6fa; --lav-ink: #6d5bb8; --line: #f0e6e2;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+    font: 15px/1.5 "Segoe UI", system-ui, -apple-system, sans-serif; }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 32px 20px 56px; }
+  header { display: flex; align-items: center; gap: 18px; margin-bottom: 26px; }
+  header h1 { font-size: 24px; margin: 0 0 4px; }
+  header p { margin: 0; color: var(--soft); font-size: 14px; }
+  .sync { font-size: 12.5px !important; }
+  .sync i { display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--mint-ink); margin-right: 6px; animation: pulse 2s infinite; }
+  @keyframes pulse { 50% { opacity: 0.35; } }
+  .card { background: var(--card); border-radius: 18px; padding: 20px 22px;
+    margin-bottom: 18px; box-shadow: 0 2px 10px rgba(120, 90, 80, 0.06); }
+  .card h2 { font-size: 16px; margin: 0 0 14px; }
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .stat { background: var(--bg); border-radius: 14px; padding: 14px 16px; }
+  .stat b { display: block; font-size: 26px; }
+  .stat span { color: var(--soft); font-size: 13px; }
+  .bar { height: 10px; border-radius: 5px; background: var(--lav); overflow: hidden; margin-top: 12px; }
+  .bar i { display: block; height: 100%; background: var(--mint-ink); border-radius: 5px;
+    transition: width 0.6s ease; }
+  .chip { display: inline-block; padding: 2px 10px; border-radius: 999px;
+    font-size: 12px; font-weight: 600; white-space: nowrap; }
+  .chip.ok { background: var(--mint); color: var(--mint-ink); }
+  .chip.open { background: var(--lav); color: var(--lav-ink); }
+  .chip.hot { background: var(--peach); color: var(--peach-ink); }
+  .mini { margin-left: auto; padding: 2px 10px; border: 0; border-radius: 999px;
+    background: var(--lav); color: var(--lav-ink); font-size: 12px; font-weight: 600;
+    font-family: inherit; cursor: pointer; white-space: nowrap; }
+  .mini:hover { filter: brightness(0.94); }
+  .mini:disabled { opacity: 0.5; cursor: wait; }
+  .party { background: var(--mint); color: var(--mint-ink); border-radius: 14px;
+    padding: 12px 18px; margin-bottom: 18px; font-weight: 600; text-align: center;
+    animation: pop 0.4s ease; }
+  @keyframes pop { from { transform: scale(0.96); opacity: 0; } }
+  .hidden { display: none; }
+  .row { display: flex; align-items: baseline; gap: 10px; padding: 7px 0;
+    border-top: 1px solid var(--line); }
+  .row:first-child { border-top: 0; }
+  .row .id { font-family: ui-monospace, monospace; font-size: 13px; color: var(--soft);
+    min-width: 86px; }
+  .row.done .text { color: var(--soft); }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .kanban { display: grid; grid-template-columns: 1.15fr 1fr 1fr 1fr; gap: 14px; align-items: start; }
+  .kcol { background: var(--bg); border-radius: 14px; padding: 12px 12px 6px; }
+  .kcol h3 { display: flex; justify-content: space-between; align-items: baseline;
+    margin: 2px 4px 10px; font-size: 12px; font-weight: 700; letter-spacing: 0.5px;
+    text-transform: uppercase; color: var(--soft); }
+  .kcol h3 b { color: var(--ink); }
+  .kcol.nextcol h3 { color: var(--peach-ink); }
+  .kcard { background: var(--card); border-radius: 12px; padding: 10px 12px 8px;
+    margin-bottom: 10px; box-shadow: 0 1px 6px rgba(120, 90, 80, 0.05); cursor: grab; }
+  .kcard .tid { display: flex; align-items: center; gap: 8px;
+    font-family: ui-monospace, monospace; font-size: 12px; color: var(--soft); }
+  .kcard p { margin: 6px 0 4px; font-size: 13.5px; line-height: 1.45; }
+  .kcard.done { opacity: 0.75; }
+  .kcard.done p { color: var(--soft); }
+  .kcard.next { border: 1.5px solid var(--peach-ink);
+    box-shadow: 0 3px 12px rgba(201, 106, 61, 0.12); }
+  .kcard.next .tid { color: var(--peach-ink); font-weight: 700; }
+  .actions { display: flex; justify-content: flex-end; padding-top: 4px; }
+  .empty { color: var(--soft); font-size: 13px; margin: 0 4px 10px; }
+  .kbody { max-height: 430px; overflow-y: auto; }
+  .kcard.dragging { opacity: 0.45; }
+  .kcol.over { outline: 2px dashed var(--lav-ink); outline-offset: -5px; }
+  .chip.think { background: var(--peach); color: var(--peach-ink); animation: pulse 1.2s infinite; }
+  @media (max-width: 760px) { .kanban { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 700px) { .cols, .stats, .kanban { grid-template-columns: 1fr; } }
+  .addr { font-family: ui-monospace, monospace; font-size: 12.5px; }
+  .addr a { color: var(--lav-ink); text-decoration: none; }
+  .addr a:hover { text-decoration: underline; }
+  .muted { color: var(--soft); font-size: 13px; }
+  footer { margin-top: 26px; color: var(--soft); font-size: 13px; text-align: center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <svg width="56" height="56" viewBox="0 0 64 64" aria-hidden="true">
+      <ellipse cx="32" cy="38" rx="23" ry="19" fill="#ffd9cc"/>
+      <ellipse cx="32" cy="44" rx="14" ry="8" fill="#fff0e8" opacity="0.7"/>
+      <circle cx="24" cy="34" r="4.6" fill="#3b3348"/>
+      <circle cx="40" cy="34" r="4.6" fill="#3b3348"/>
+      <circle cx="25.6" cy="32.4" r="1.6" fill="#fff"/>
+      <circle cx="41.6" cy="32.4" r="1.6" fill="#fff"/>
+      <ellipse cx="17" cy="40" rx="3.2" ry="2" fill="#ffb8a6"/>
+      <ellipse cx="47" cy="40" rx="3.2" ry="2" fill="#ffb8a6"/>
+      <path d="M29 43 q3 3 6 0" stroke="#3b3348" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+    </svg>
+    <div>
+      <h1>Конвейер «Пухляндии»</h1>
+      <p id="cut">срез от …</p>
+      <p class="sync muted"><i></i><span id="sync">живой режим: опрос каждые 4с</span></p>
+    </div>
+  </header>
+
+  <div id="party" class="party hidden">Все тикеты закрыты — конвейер отработал полный цикл, пухлик доволен :3</div>
+
+  <section class="stats card">
+    <div class="stat"><b id="stat-tickets">…</b><span>тикетов закрыто</span></div>
+    <div class="stat"><b id="stat-judge">…</b><span>судья: approve / вернули на добор</span></div>
+    <div class="stat"><b id="stat-runs">…</b><span>логов прогонов агентов</span></div>
+    <div style="grid-column: 1 / -1;">
+      <div class="bar"><i id="bar" style="width:0%"></i></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Канбан конвейера</h2>
+    <div id="kanban" class="kanban"></div>
+    <p class="muted">перетащи карточку: «Готово» — закрыть, «Следующая»/«Очередь» — порядок очереди из tasks.md, «В работе» — claim (ветка + worktree); кнопка «судье» запускает judge по ветке тикета</p>
+  </section>
+
+  <div class="cols">
+    <section class="card">
+      <h2>Судья · последние вердикты</h2>
+      <div id="judge"></div>
+      <p class="muted">судья — модель другого вендора, чем кодящий агент</p>
+    </section>
+    <section class="card">
+      <h2>Журнал прогонов · docs/runs</h2>
+      <div id="runs"></div>
+      <p class="muted">каждый прогон агента описан по шаблону — читается глазами</p>
+    </section>
+  </div>
+
+  <section class="card">
+    <h2>Живой деплой · <span id="net"></span></h2>
+    <div id="deploy"></div>
+  </section>
+
+  <footer>пересобрать срез: <code>node dashboard/build.mjs</code> · живой режим: <code>node dashboard/serve.mjs</code></footer>
+</div>
+<script>
+let DATA = {"generatedAt":"2026-10-22 15:17:21","queue":[{"id":"003-tc-01","done":true,"text":"скелет полигона: pnpm workspace, forge-пакет с зелёным смок-тестом, Vite-клиент с няшной сценой-заглушкой","change":"003-critter-core","section":"tc-01","state":"done"},{"id":"003-tc-02","done":true,"text":"контракт Critter: хатч из ДНК-сида, минт демо-аккаунту, события Hatched, тесты Foundry","change":"003-critter-core","section":"tc-02","state":"done"},{"id":"003-tc-03","done":true,"text":"он-чейн арт: tokenURI как data-URI SVG желейки из ДНК, снапшот-тест","change":"003-critter-core","section":"tc-03","state":"done"},{"id":"003-tc-04","done":true,"text":"уход: feed/play/sleep обновляют статусы 0..100 с clamp, события Fed/Played/Slept","change":"003-critter-core","section":"tc-04","state":"done"},{"id":"003-tc-05","done":true,"text":"эволюция: level растёт от актов заботы, пороги → stage 0..2, событие Evolved","change":"003-critter-core","section":"tc-05","state":"done"},{"id":"003-tc-06","done":true,"text":"редкая мутация: детерминированно из ДНК+level, вспышка в Evolved-событии","change":"003-critter-core","section":"tc-06","state":"done"},{"id":"003-tc-07","done":true,"text":"ERC-6551 TBA: минимальный Registry + TokenBoundAccount у питомца, адрес кошелька виден","change":"003-critter-core","section":"tc-07","state":"done"},{"id":"003-tc-08","done":true,"text":"ачивка за эволюцию: минт маленького NFT прямо в TBA пухлика","change":"003-critter-core","section":"tc-08","state":"done"},{"id":"003-tc-09","done":true,"text":"web сцена: пухлик из on-chain tokenURI, реакции корм/игра/сон (анимации + тосты «Ням!»)","change":"003-critter-core","section":"tc-09","state":"done"},{"id":"003-tc-10","done":true,"text":"web burner-кошелёк + Base Sepolia: отправка транзакций ухода в демо-сеть","change":"003-critter-core","section":"tc-10","state":"done"},{"id":"003-tc-11","done":true,"text":"лента жизни: подписка на события контракта, тосты-события, ссылка на basescan","change":"003-critter-core","section":"tc-11","state":"done"},{"id":"003-tc-12","done":true,"text":"карточка TBA: адрес, баланс, ачивки питомца в UI","change":"003-critter-core","section":"tc-12","state":"done"},{"id":"003-tc-13","done":true,"text":"деплой на Base Sepolia: script Deploy.s.sol + верификация на basescan, кран-процедура в README","change":"003-critter-core","section":"tc-13","state":"done"},{"id":"003-tc-14","done":false,"text":"**[hot]** микро-няш: при клике на пухлика — squash&stretch + случайная реплика","change":"003-critter-core","section":"tc-14","state":"open"}],"judge":[{"date":"2026-10-21 11:27:19","branch":"work/003-critter-core/tc-12","verdict":"approve"},{"date":"2026-10-21 11:01:42","branch":"work/003-critter-core/tc-11","verdict":"approve"},{"date":"2026-10-21 11:01:19","branch":"work/003-critter-core/tc-08","verdict":"approve"},{"date":"2026-10-21 11:00:48","branch":"work/003-critter-core/tc-06","verdict":"approve"},{"date":"2026-10-21 11:00:45","branch":"work/003-critter-core/tc-06","verdict":"approve"},{"date":"2026-10-21 10:18:19","branch":"work/003-critter-core/tc-06","verdict":"request-changes"},{"date":"2026-10-21 10:09:39","branch":"work/003-critter-core/tc-13","verdict":"approve"},{"date":"2026-10-21 10:09:24","branch":"work/003-critter-core/tc-05","verdict":"approve"},{"date":"2026-10-21 07:49:15","branch":"work/003-critter-core/tc-10","verdict":"approve"},{"date":"2026-10-21 07:49:13","branch":"work/003-critter-core/tc-03","verdict":"approve"},{"date":"2026-10-21 07:28:53","branch":"work/003-critter-core/tc-04","verdict":"approve"},{"date":"2026-10-21 07:28:52","branch":"work/003-critter-core/tc-09","verdict":"approve"},{"date":"2026-10-21 07:12:07","branch":"work/003-critter-core/tc-07","verdict":"approve"},{"date":"2026-10-21 06:58:15","branch":"work/003-critter-core/tc-02","verdict":"approve"}],"runs":["2026-10-21-base-sepolia-live","2026-10-21-003-tc-13","2026-10-21-003-tc-12","2026-10-21-003-tc-12-plan","2026-10-21-003-tc-11","2026-10-21-003-tc-11-plan","2026-10-21-003-tc-10","2026-10-21-003-tc-09"],"runsTotal":18,"deploy":{"network":"Base Sepolia (chain 84532)","contracts":[{"name":"Critter","address":"0xf9cC9371d6392de66Cb1BA4Caef1e90F9d3A6b1A"},{"name":"Registry (ERC-6551)","address":"0x5d8Cdad3D38E7921720F74018B7eBfbf788aFDcb"},{"name":"TBA кошелёк пухлика","address":"0xf44B34bf267fD2735fD31F3F1A9a100d57a0A596"},{"name":"Achievements","address":"0x8Af3ef94e6D2881e1ADFDE6c7eb0b4fEA416D2CB"}],"wallet":{"name":"Демо-кошелёк (burner)","address":"0xae887A5712132C7cC1f62127AB1A1f8f03A91413"}}};
+const KEY = (d) => JSON.stringify([d.queue, d.judge, d.runs, d.runsTotal, d.judgeRunning || []]);
+let lastKey = KEY(DATA);
+let dragId = null;
+
+function applyData(d) {
+  DATA = d;
+  lastKey = KEY(d);
+  if (!dragId) render();
+}
+
+function render() {
+  const done = DATA.queue.filter((t) => t.done).length;
+  const approved = DATA.judge.filter((r) => r.verdict === "approve").length;
+  const returned = DATA.judge.filter((r) => r.verdict === "request-changes").length;
+  document.getElementById("cut").textContent = "спеки → тикеты → параллельные агенты → judge-ревью → мерж · срез от " + DATA.generatedAt;
+  document.getElementById("stat-tickets").textContent = done + "/" + DATA.queue.length;
+  document.getElementById("stat-judge").textContent = approved + " / " + returned;
+  document.getElementById("stat-runs").textContent = DATA.runsTotal;
+  document.getElementById("bar").style.width = Math.round((done / DATA.queue.length) * 100) + "%";
+  document.getElementById("net").textContent = DATA.deploy.network;
+  document.getElementById("party").classList.toggle("hidden", done !== DATA.queue.length);
+
+  const live = location.protocol !== "file:";
+  const clean = (s) => s.replace(/\*\*/g, "").replace("[hot]", "").trim();
+  const next = DATA.queue.find((t) => !t.done);
+  const inProgress = DATA.queue.filter(
+    (t) => !t.done && t.state.startsWith("claimed") && t.id !== next?.id,
+  );
+  const backlog = DATA.queue.filter(
+    (t) => !t.done && !t.state.startsWith("claimed") && t.id !== next?.id,
+  );
+  const finished = DATA.queue.filter((t) => t.done);
+
+  const card = (t, extra) => {
+    const hot = t.text.includes("[hot]");
+    const claimed = !t.done && (t.state || "").startsWith("claimed");
+    const thinking = (DATA.judgeRunning || []).includes(t.id);
+    return '<div class="kcard ' + (extra === "next" ? "next" : "") + (t.done ? " done" : "")
+      + '" data-id="' + t.id + '"' + (live ? ' draggable="true"' : "") + '>'
+      + '<div class="tid">' + t.id
+      + (hot ? '<span class="chip hot">hot</span>' : "")
+      + (claimed ? '<span class="chip open">worktree</span>' : "")
+      + (thinking ? '<span class="chip think">судья думает…</span>' : "")
+      + '</div>'
+      + '<p>' + clean(t.text) + '</p>'
+      + (live ? '<div class="actions">'
+        + (claimed && !thinking ? '<button class="mini judge" data-id="' + t.id
+          + '" title="запустить judge по ветке тикета">судье</button>' : "")
+        + '<button class="mini" data-id="' + t.id + '">'
+        + (t.done ? "переоткрыть" : "закрыть") + '</button>'
+        + '</div>' : '')
+      + '</div>';
+  };
+  const col = (title, items, extra) => {
+    const dcol = extra === "nextcol" ? "next" : extra === "claimed" ? "work"
+      : extra === "donecol" ? "done" : "queue";
+    return '<div class="kcol ' + (extra || "") + '" data-col="' + dcol + '"><h3><span>' + title
+      + '</span><b>' + items.length + '</b></h3>'
+      + (extra === "donecol" ? '<div class="kbody">' : "")
+      + (items.map((t) => card(t, extra === "donecol" ? "" : extra === "nextcol" ? "next" : extra)).join("")
+        || '<p class="empty">' + (extra === "nextcol" ? "все закрыты :3" : "—") + '</p>')
+      + (extra === "donecol" ? '</div>' : "")
+      + '</div>';
+  };
+
+  document.getElementById("kanban").innerHTML =
+    col("Следующая", next ? [next] : [], "nextcol")
+    + col("Очередь", backlog)
+    + col("В работе", inProgress, "claimed")
+    + col("Готово", finished, "donecol");
+
+  document.getElementById("judge").innerHTML = DATA.judge.slice(0, 7).map((r) => {
+    const ok = r.verdict === "approve";
+    return '<div class="row"><span class="id">' + r.date.slice(5, 16) + '</span>'
+      + '<span class="chip ' + (ok ? "ok" : "hot") + '">' + (ok ? "approve" : "на добор") + '</span>'
+      + '<span class="text" style="font-family:ui-monospace,monospace;font-size:12px;">'
+      + r.branch.split("/").slice(-2).join("/") + '</span></div>';
+  }).join("");
+
+  document.getElementById("runs").innerHTML = DATA.runs.map((r) =>
+    '<div class="row"><span class="text" style="font-family:ui-monospace,monospace;font-size:12.5px;">'
+    + r + '</span></div>').join("");
+
+  document.getElementById("deploy").innerHTML = DATA.deploy.contracts.concat([DATA.deploy.wallet]).map((c) =>
+    '<div class="row"><span class="id" style="min-width:190px;">' + c.name + '</span>'
+    + '<span class="addr"><a href="https://sepolia.basescan.org/address/' + c.address + '" target="_blank" rel="noreferrer">'
+    + c.address.slice(0, 10) + "…" + c.address.slice(-6) + '</a></span></div>').join("");
+}
+
+render();
+
+async function postJSON(url, body, btn) {
+  try {
+    const r = await fetch(url, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    const j = await r.json();
+    if (!r.ok || j.ok === false) throw new Error(j.error || "не вышло");
+    if (j.data) applyData(j.data);
+    return j;
+  } catch (err) {
+    const msg = (err.message || "не вышло").slice(0, 42);
+    if (btn) {
+      btn.textContent = msg;
+      setTimeout(() => render(), 2600);
+    } else {
+      document.getElementById("sync").textContent = "не вышло: " + msg;
+    }
+  }
+}
+
+document.getElementById("kanban").addEventListener("click", (e) => {
+  const judgeBtn = e.target.closest("button.mini.judge");
+  const btn = judgeBtn || e.target.closest("button.mini");
+  if (!btn || btn.disabled) return;
+  const t = DATA.queue.find((x) => x.id === btn.dataset.id);
+  if (!t) return;
+  btn.disabled = true;
+  btn.textContent = "…";
+  if (judgeBtn) postJSON("/api/judge-run", { id: t.id }, btn);
+  else postJSON("/api/ticket-toggle",
+    { change: t.change, section: t.section, text: t.text, done: !t.done }, btn);
+});
+
+const kanbanEl = document.getElementById("kanban");
+kanbanEl.addEventListener("dragstart", (e) => {
+  const card = e.target.closest(".kcard");
+  if (!card || !card.draggable) return;
+  dragId = card.dataset.id;
+  card.classList.add("dragging");
+  e.dataTransfer.effectAllowed = "move";
+  try { e.dataTransfer.setData("text/plain", dragId); } catch {}
+});
+kanbanEl.addEventListener("dragend", () => {
+  kanbanEl.querySelectorAll(".kcol.over").forEach((c) => c.classList.remove("over"));
+  const card = kanbanEl.querySelector(".kcard.dragging");
+  if (card) card.classList.remove("dragging");
+  dragId = null;
+  render();
+});
+kanbanEl.addEventListener("dragover", (e) => {
+  if (!dragId) return;
+  const col = e.target.closest(".kcol");
+  if (!col) return;
+  e.preventDefault();
+  e.dataTransfer.dropEffect = "move";
+  if (!col.classList.contains("over")) {
+    kanbanEl.querySelectorAll(".kcol.over").forEach((c) => c.classList.remove("over"));
+    col.classList.add("over");
+  }
+});
+kanbanEl.addEventListener("drop", (e) => {
+  if (!dragId) return;
+  const col = e.target.closest(".kcol");
+  if (!col) return;
+  e.preventDefault();
+  const t = DATA.queue.find((x) => x.id === dragId);
+  const target = col.dataset.col;
+  dragId = null;
+  if (!t) return;
+  if (target === "done") {
+    if (t.done) return;
+    postJSON("/api/ticket-toggle",
+      { change: t.change, section: t.section, text: t.text, done: true });
+  } else if (target === "next" || target === "queue") {
+    if ((t.state || "").startsWith("claimed")) return;
+    postJSON("/api/ticket-move",
+      { change: t.change, section: t.section, text: t.text, place: target });
+  } else if (target === "work") {
+    if (t.done || (t.state || "").startsWith("claimed")) return;
+    postJSON("/api/ticket-claim", { id: t.id });
+  }
+});
+
+async function poll() {
+  try {
+    const r = await fetch("/api/data", { cache: "no-store" });
+    if (!r.ok) return;
+    const fresh = await r.json();
+    const stamp = "живой режим: обновлено в " + new Date().toLocaleTimeString("ru-RU");
+    if (KEY(fresh) !== lastKey) applyData(fresh);
+    document.getElementById("sync").textContent = stamp;
+  } catch {
+    document.getElementById("sync").textContent = "офлайн-режим: пересобери node dashboard/build.mjs";
+  }
+}
+
+setInterval(poll, 4000);
+poll();
+</script>
+</body>
+</html>

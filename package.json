@@ -4,6 +4,8 @@
   "scripts": {
     "build": "pnpm -r build",
     "test": "pnpm -r test",
-    "lint": "pnpm -r lint"
+    "lint": "pnpm -r lint",
+    "dashboard": "node dashboard/build.mjs",
+    "dashboard:live": "node dashboard/serve.mjs"
   }
 }

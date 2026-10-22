@@ -1,130 +1,103 @@
 {
+  "generatedAt": "2026-10-21 20:12:19",
   "queue": [
     {
       "id": "003-tc-01",
-      "change": "003-critter-core",
-      "section": "tc-01",
-      "slug": "скелет-полигона-pnpm-workspace",
       "done": true,
       "text": "скелет полигона: pnpm workspace, forge-пакет с зелёным смок-тестом, Vite-клиент с няшной сценой-заглушкой",
-      "tasksPath": "/home/e/projects/agent-factory/openspec/changes/003-critter-core/tasks.md"
+      "change": "003-critter-core",
+      "section": "tc-01"
     },
     {
       "id": "003-tc-02",
-      "change": "003-critter-core",
-      "section": "tc-02",
-      "slug": "контракт-critter-хатч-из",
       "done": true,
       "text": "контракт Critter: хатч из ДНК-сида, минт демо-аккаунту, события Hatched, тесты Foundry",
-      "tasksPath": "/home/e/projects/agent-factory/openspec/changes/003-critter-core/tasks.md"
+      "change": "003-critter-core",
+      "section": "tc-02"
     },
     {
       "id": "003-tc-03",
-      "change": "003-critter-core",
-      "section": "tc-03",
-      "slug": "он-чейн-арт-tokenuri",
       "done": true,
       "text": "он-чейн арт: tokenURI как data-URI SVG желейки из ДНК, снапшот-тест",
-      "tasksPath": "/home/e/projects/agent-factory/openspec/changes/003-critter-core/tasks.md"
+      "change": "003-critter-core",
+      "section": "tc-03"
     },
     {
       "id": "003-tc-04",
-      "change": "003-critter-core",
-      "section": "tc-04",
-      "slug": "уход-feed-play-sleep",
       "done": true,
       "text": "уход: feed/play/sleep обновляют статусы 0..100 с clamp, события Fed/Played/Slept",
-      "tasksPath": "/home/e/projects/agent-factory/openspec/changes/003-critter-core/tasks.md"
+      "change": "003-critter-core",
+      "section": "tc-04"
     },
     {
       "id": "003-tc-05",
-      "change": "003-critter-core",
-      "section": "tc-05",
-      "slug": "эволюция-level-раст-т",
-      "done": false,
+      "done": true,
       "text": "эволюция: level растёт от актов заботы, пороги → stage 0..2, событие Evolved",
-      "tasksPath": "/home/e/projects/agent-factory/openspec/changes/003-critter-core/tasks.md"
+      "change": "003-critter-core",
+      "section": "tc-05"
     },
     {
       "id": "003-tc-06",
-      "change": "003-critter-core",
-      "section": "tc-06",
-      "slug": "редкая-мутация-детерминированно-из",
-      "done": false,
+      "done": true,
       "text": "редкая мутация: детерминированно из ДНК+level, вспышка в Evolved-событии",
-      "tasksPath": "/home/e/projects/agent-factory/openspec/changes/003-critter-core/tasks.md"
+      "change": "003-critter-core",
+      "section": "tc-06"
     },
     {
       "id": "003-tc-07",
-      "change": "003-critter-core",
-      "section": "tc-07",
-      "slug": "erc-6551-tba-минимальный",
       "done": true,
       "text": "ERC-6551 TBA: минимальный Registry + TokenBoundAccount у питомца, адрес кошелька виден",
-      "tasksPath": "/home/e/projects/agent-factory/openspec/changes/003-critter-core/tasks.md"
+      "change": "003-critter-core",
+      "section": "tc-07"
     },
     {
       "id": "003-tc-08",
-      "change": "003-critter-core",
-      "section": "tc-08",
-      "slug": "ачивка-за-эволюцию-минт",
-      "done": false,
+      "done": true,
       "text": "ачивка за эволюцию: минт маленького NFT прямо в TBA пухлика",
-      "tasksPath": "/home/e/projects/agent-factory/openspec/changes/003-critter-core/tasks.md"
+      "change": "003-critter-core",
+      "section": "tc-08"
     },
     {
       "id": "003-tc-09",
-      "change": "003-critter-core",
-      "section": "tc-09",
-      "slug": "web-сцена-пухлик-из",
       "done": true,
       "text": "web сцена: пухлик из on-chain tokenURI, реакции корм/игра/сон (анимации + тосты «Ням!»)",
-      "tasksPath": "/home/e/projects/agent-factory/openspec/changes/003-critter-core/tasks.md"
+      "change": "003-critter-core",
+      "section": "tc-09"
     },
     {
       "id": "003-tc-10",
-      "change": "003-critter-core",
-      "section": "tc-10",
-      "slug": "web-burner-кошел-к",
       "done": true,
       "text": "web burner-кошелёк + Base Sepolia: отправка транзакций ухода в демо-сеть",
-      "tasksPath": "/home/e/projects/agent-factory/openspec/changes/003-critter-core/tasks.md"
+      "change": "003-critter-core",
+      "section": "tc-10"
     },
     {
       "id": "003-tc-11",
-      "change": "003-critter-core",
-      "section": "tc-11",
-      "slug": "лента-жизни-подписка-на",
-      "done": false,
+      "done": true,
       "text": "лента жизни: подписка на события контракта, тосты-события, ссылка на basescan",
-      "tasksPath": "/home/e/projects/agent-factory/openspec/changes/003-critter-core/tasks.md"
+      "change": "003-critter-core",
+      "section": "tc-11"
     },
     {
       "id": "003-tc-12",
-      "change": "003-critter-core",
-      "section": "tc-12",
-      "slug": "карточка-tba-адрес-баланс",
-      "done": false,
+      "done": true,
       "text": "карточка TBA: адрес, баланс, ачивки питомца в UI",
-      "tasksPath": "/home/e/projects/agent-factory/openspec/changes/003-critter-core/tasks.md"
+      "change": "003-critter-core",
+      "section": "tc-12"
     },
     {
       "id": "003-tc-13",
-      "change": "003-critter-core",
-      "section": "tc-13",
-      "slug": "деплой-на-base-sepolia",
-      "done": false,
+      "done": true,
       "text": "деплой на Base Sepolia: script Deploy.s.sol + верификация на basescan, кран-процедура в README",
-      "tasksPath": "/home/e/projects/agent-factory/openspec/changes/003-critter-core/tasks.md"
+      "change": "003-critter-core",
+      "section": "tc-13"
     },
     {
       "id": "003-tc-14",
-      "change": "003-critter-core",
-      "section": "tc-14",
-      "slug": "hot-микро-няш-при",
       "done": false,
       "text": "**[hot]** микро-няш: при клике на пухлика — squash&stretch + случайная реплика",
-      "tasksPath": "/home/e/projects/agent-factory/openspec/changes/003-critter-core/tasks.md"
+      "change": "003-critter-core",
+      "section": "tc-14"
     }
   ],
   "board": [
@@ -150,12 +123,12 @@
     },
     {
       "id": "003-tc-05",
-      "state": "open",
+      "state": "done",
       "text": "эволюция: level растёт от актов заботы, пороги → stage 0..2, событие Evolved"
     },
     {
       "id": "003-tc-06",
-      "state": "open",
+      "state": "done",
       "text": "редкая мутация: детерминированно из ДНК+level, вспышка в Evolved-событии"
     },
     {
@@ -165,7 +138,7 @@
     },
     {
       "id": "003-tc-08",
-      "state": "open",
+      "state": "done",
       "text": "ачивка за эволюцию: минт маленького NFT прямо в TBA пухлика"
     },
     {
@@ -180,17 +153,17 @@
     },
     {
       "id": "003-tc-11",
-      "state": "open",
+      "state": "done",
       "text": "лента жизни: подписка на события контракта, тосты-события, ссылка на basescan"
     },
     {
       "id": "003-tc-12",
-      "state": "open",
+      "state": "done",
       "text": "карточка TBA: адрес, баланс, ачивки питомца в UI"
     },
     {
       "id": "003-tc-13",
-      "state": "open",
+      "state": "done",
       "text": "деплой на Base Sepolia: script Deploy.s.sol + верификация на basescan, кран-процедура в README"
     },
     {
@@ -198,5 +171,113 @@
       "state": "open",
       "text": "**[hot]** микро-няш: при клике на пухлика — squash&stretch + случайная реплика"
     }
-  ]
+  ],
+  "judge": [
+    {
+      "date": "2026-10-21 11:27:19",
+      "branch": "work/003-critter-core/tc-12",
+      "verdict": "approve"
+    },
+    {
+      "date": "2026-10-21 11:01:42",
+      "branch": "work/003-critter-core/tc-11",
+      "verdict": "approve"
+    },
+    {
+      "date": "2026-10-21 11:01:19",
+      "branch": "work/003-critter-core/tc-08",
+      "verdict": "approve"
+    },
+    {
+      "date": "2026-10-21 11:00:48",
+      "branch": "work/003-critter-core/tc-06",
+      "verdict": "approve"
+    },
+    {
+      "date": "2026-10-21 11:00:45",
+      "branch": "work/003-critter-core/tc-06",
+      "verdict": "approve"
+    },
+    {
+      "date": "2026-10-21 10:18:19",
+      "branch": "work/003-critter-core/tc-06",
+      "verdict": "request-changes"
+    },
+    {
+      "date": "2026-10-21 10:09:39",
+      "branch": "work/003-critter-core/tc-13",
+      "verdict": "approve"
+    },
+    {
+      "date": "2026-10-21 10:09:24",
+      "branch": "work/003-critter-core/tc-05",
+      "verdict": "approve"
+    },
+    {
+      "date": "2026-10-21 07:49:15",
+      "branch": "work/003-critter-core/tc-10",
+      "verdict": "approve"
+    },
+    {
+      "date": "2026-10-21 07:49:13",
+      "branch": "work/003-critter-core/tc-03",
+      "verdict": "approve"
+    },
+    {
+      "date": "2026-10-21 07:28:53",
+      "branch": "work/003-critter-core/tc-04",
+      "verdict": "approve"
+    },
+    {
+      "date": "2026-10-21 07:28:52",
+      "branch": "work/003-critter-core/tc-09",
+      "verdict": "approve"
+    },
+    {
+      "date": "2026-10-21 07:12:07",
+      "branch": "work/003-critter-core/tc-07",
+      "verdict": "approve"
+    },
+    {
+      "date": "2026-10-21 06:58:15",
+      "branch": "work/003-critter-core/tc-02",
+      "verdict": "approve"
+    }
+  ],
+  "runs": [
+    "2026-10-21-base-sepolia-live",
+    "2026-10-21-003-tc-13",
+    "2026-10-21-003-tc-12",
+    "2026-10-21-003-tc-12-plan",
+    "2026-10-21-003-tc-11",
+    "2026-10-21-003-tc-11-plan",
+    "2026-10-21-003-tc-10",
+    "2026-10-21-003-tc-09"
+  ],
+  "runsTotal": 18,
+  "deploy": {
+    "network": "Base Sepolia (chain 84532)",
+    "contracts": [
+      {
+        "name": "Critter",
+        "address": "0xf9cC9371d6392de66Cb1BA4Caef1e90F9d3A6b1A"
+      },
+      {
+        "name": "Registry (ERC-6551)",
+        "address": "0x5d8Cdad3D38E7921720F74018B7eBfbf788aFDcb"
+      },
+      {
+        "name": "TBA кошелёк пухлика",
+        "address": "0xf44B34bf267fD2735fD31F3F1A9a100d57a0A596"
+      },
+      {
+        "name": "Achievements",
+        "address": "0x8Af3ef94e6D2881e1ADFDE6c7eb0b4fEA416D2CB"
+      }
+    ],
+    "wallet": {
+      "name": "Демо-кошелёк (burner)",
+      "address": "0xae887A5712132C7cC1f62127AB1A1f8f03A91413"
+    }
+  }
 }
